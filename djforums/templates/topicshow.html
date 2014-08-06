@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block title0 %}
+<head>
+	<meta charset="UTF-8"> 
+	<title>{{t.category.name}} › {{t.subject}}</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/uliweb.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
+	<script src="/static/css/jquery.js"></script>
+
+<!--tinymce-->
+<script type="text/javascript" src="http://www.chinagame.me/static/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+<script type="text/javascript" src="http://www.chinagame.me/static/tinymce/js/tinymce/tinymce.min.js"></script>
+
+</head>
+{% endblock %}
+{% block content2%}
+<script>
+function loadtinymce()
+{
+        tinymce.init({
+    selector: "textarea",
+    theme: "modern",
+    plugins: [
+        "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+        "searchreplace wordcount visualblocks visualchars code fullscreen",
+        "insertdatetime media nonbreaking save table contextmenu directionality",
+        "emoticons template paste textcolor"
+    ],
+    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+    toolbar2: "print preview media | forecolor backcolor emoticons",
+        });
+}
+$(document).ready(function(){
+        loadtinymce();
+});
+</script>
+
+
+<body>
+
+<div class="content">
+<div class="box">
+</div>
+<div class="sep20"></div>
+	<div class="box">
+	
+	</div>
+	
+	<div class="box" style="width:70%" style="border-bottom: 0px;">
+    <div class="header">
+    <a href="/cate/{{t.id}}">{{t.category.name}}</a> <span class="chevron">&nbsp;›&nbsp;</span> <a>{{t.subject}}</a>
+    <div class="sep10"></div>
+    <h1>{{t.subject}}</h1>
+    <div id="topic_120428_votes" class="votes">
+<a href="javascript:" onclick="upVoteTopic(120428);" class="vote"><li class="icon-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(120428);" class="vote"><li class="icon-chevron-down"></li></a></div> &nbsp; <small class="gray"><a href="/member/lezhou">{{t.author}}</a> · {{t.created}} · {{t.num_views}} 次点击 &nbsp; </small>
+    </div>
+    
+    <div class="cell">
+        <div class="topic_content">{{t.content|safe}}</div>
+    </div>
+   
+  
+    <div class="topic_buttons"><div class="fr gray f11" style="line-height: 12px; padding-top: 3px; text-shadow: 0px 1px 0px #fff;">{{t.num_views}} 次点击 &nbsp;∙&nbsp; &nbsp; </div> &nbsp;<a href="#;" onclick="window.open('https://twitter.com/share?url=http://www.v2ex.com/t/120428?r\u003Dzhuhy&amp;related=v2ex&amp;hashtags=mbp&amp;text=请问如何清洗 MacBook pro 的键盘', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'twitter.com');" class="tb">Tweet</a> &nbsp;<a href="#;" onclick="window.open('http://service.weibo.com/share/share.php?url=http://www.v2ex.com/t/120428?r\u003Dzhuhy&amp;title=V2EX%20-%20请问如何清洗 MacBook pro 的键盘', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'weibo.com');" class="tb">Weibo</a> &nbsp;<a href="#;" onclick="if (confirm('确定不想再看到这个主题？')) { location.href = '/ignore/topic/120428?once=34863'; }" class="tb">忽略主题</a> &nbsp;<div id="topic_thank"><a href="#;" onclick="if (confirm('你确定要向本主题创建者发送谢意？')) { thankTopic(120428, 'ngkuuqustlcvssultgjpdkxmsnxywsbm'); }" class="tb">感谢</a></div></div>
+</div>
+
+<div class="sep20"></div>
+	
+
+<!--reply-->
+
+<div class="box"style="width:70%">
+<div class="cell"><div class="fr" style="margin: -3px -5px 0px 0px;"><a href="/tag/zsh" class="tag"><li class="icon-tag"></li> zsh</a><a href="/tag/fish" class="tag"><li class="icon-tag"></li> fish</a><a href="/tag/配合" class="tag"><li class="icon-tag"></li> 配合</a></div>
+    <span class="gray">{{t.num_replys}} 回复 &nbsp;<strong class="snow">|</strong> &nbsp;直到 {{t.created}}</span>
+</div>
+
+
+
+{%for t in replys%}
+<div id="r_1182214" class="cell">
+
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tbody><tr>
+            <td width="48" valign="top" align="center"><img src="{{MEDIA_URL}}{{t.p.get_photo}}" style="width: 48px;height: 48px;" class="avatar" border="0" align="default"></td>
+            <td width="10" valign="top"></td>
+            <td width="auto" valign="top" align="left"><div class="fr"><div id="thank_area_1182214" class="thank_area"><a href="#;" onclick="if (confirm('确认要不再显示来自 {{t.author}} 的这条回复？')) { ignoreReply(1182214, '34863'); }" class="thank" style="color: #ccc;">隐藏</a> &nbsp; &nbsp; &nbsp; <a href="#;" onclick="thankReply(1182214, 'bmfjjvyjhnouiqltxmamxynlpduxddhf');" class="thank">感谢回复者</a></div> &nbsp; <a href="#;" onclick="replyOne('wklken');"><img src="//cdn.v2ex.com/static/img/reply.png" align="absmiddle" border="0" alt="Reply"></a> &nbsp;&nbsp; <span class="no">1</span></div>
+                <div class="sep3"></div>
+                <strong><a href="/member/wklken" class="dark">{{t.author}}</a></strong>&nbsp; &nbsp;<span class="fade small">1 天前</span> 
+                <div class="sep5"></div>
+                <div class="reply_content">{{t.content|safe}}</div>
+            </td>
+        </tr>
+    </tbody></table>
+
+</div>
+{%endfor%}
+
+
+</div>
+<div class="sep20"></div>
+<div class="box"style="width:70%; text-align:left;">
+
+<a class="tb" id="newtopic">回帖</a>
+
+</div>
+</div>
+
+
+
+<!---->
+
+<div class="backgroundbox" style="display:none;">
+</div>
+
+<div class="popbox" style="display:none;width:600;height:450;padding:30px 10px 10px 10px;">
+	<a class="close" id="close">X</a>
+
+		<form action="/topic/{{t.id}}/replytopic" method="POST">
+		{%csrf_token%}
+
+		<textarea style="height:250px;" name="content"></textarea>
+		<button class="btn btn-primary">发表</button>
+		</form>
+
+	
+</div>
+
+
+
+</body>
+{%endblock%}
+{% block content3%}
+<script>
+$(document).ready(function(){
+	$("#newtopic").click(function(){
+		$(".backgroundbox").show();
+		$(".popbox").show();
+	});
+
+	$("#close").click(function(){
+		$(".backgroundbox").hide();
+		$(".popbox").hide();
+	});
+});
+</script>
+{%endblock%}

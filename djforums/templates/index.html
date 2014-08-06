@@ -1,0 +1,267 @@
+
+<head>
+	<meta charset="UTF-8"> 
+	<title>Djforum › 首页</title>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/uliweb.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
+	<script src="/static/css/jquery.js"></script>
+
+</head>
+
+
+{% extends "base.html" %}
+
+<!--标题栏-->  
+
+<!--结束-->
+
+<!--偏右侧边栏-->
+
+<body>
+{% block content0%}
+
+<div class="sep20"></div>
+<!--热议主题-->
+<div class="box" id="TopicsHot">
+    <div class="cell"><span class="fade">热议主题</span></div>
+{%for e in top22%}
+    <div class="cell from_37640 hot_t_123949">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tbody><tr>
+            <td width="24" valign="middle" align="center">
+                <a href="/topic/{{e.id}}"><img src="{{MEDIA_URL}}{{e.p.get_photo}}" class="avatar" border="0" align="default" style="width: 24px;height: 24px;"></a>
+            </td>
+            <td width="10"></td>
+            <td width="auto" valign="middle">
+                <span class="item_hot_topic_title">
+
+                <a href="/topic/{{e.id}}">{{e.subject}}</a>
+
+                </span>
+            </td>
+        </tr>
+    </tbody></table>
+    </div>
+{%endfor%}
+</div>
+
+<!--结束-->
+{%endblock%}
+
+
+<!--结束-->
+
+{% block content2%}
+<div class="sep20"></div>
+<div class="box"style="width:70%">
+    <div class="cell"><div class="fr"><a id="addcate">添加分类</a></div><span><strong>Djforum</strong> / 节点导航</span></div>
+    <div class="inner"><table cellpadding="0" cellspacing="0" border="0"><tbody><tr><td align="right" width="60"><span>分类</span></td><td style="line-height: 200%; padding-left: 10px;" id="cate1">
+
+{%for a in cates%}
+<a href='/cate/{{a.id}}' style='font-size:14px;'>{{a.name}}</a>&nbsp;&nbsp;
+{%endfor%}
+</div>
+</td></tr></tbody></table></div>
+
+</div>
+
+
+<div class="sep20"></div>
+
+<div class="box" style="width:70%">
+{%for t in top20%}
+<div class="cell item" style=""><div style="position: absolute; margin: -10px -10px 0px 650px;"></div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tbody><tr>
+            
+            <td width="48" valign="top" align="center"><a href="/topic/{{t.id}}"><img src="{{MEDIA_URL}}{{t.p.get_photo}}" style="width: 48px;height: 48px;" class="avatar" border="0" align="default"></a></td>
+            <td width="10"></td>
+            
+            <td width="auto" valign="middle"><span class="item_title"><a href="/topic/{{t.id}}">({{t.category.name}}){{t.subject}}</a></span>
+            <div class="sep5"></div>
+            <span class="small"><div class="votes"></div>&nbsp;•&nbsp; <strong><a href="/useradmin">{{t.author.username}}</a></strong> &nbsp;•&nbsp; {{t.created|timesince}} &nbsp;•&nbsp; 最后回复来自 <strong><a href="/useradmin">{{t.author.username}}</a></strong></span>
+            </td>
+            <td width="50" align="right" valign="middle">
+                
+                <a href="/topic/{{t.id}}" class="count_livid">{{t.num_views}}</a>
+                
+            </td>
+        </tr>
+    </tbody></table>
+</div>
+{%endfor%}
+	
+
+</div>
+</div>
+
+<!--box-->
+<!--分类-->
+
+<div class="backgroundbox" style="display:none">
+</div>
+
+<div class="popbox" style="display:none; text-align:right;">
+	<a class="close" id="close">X</a>
+	<div class="control">
+		<input id="newcate" name="username" type="text" value=""placeholder="请输入分类"></input>
+		<p class"help help-block"></p>
+		<button id="sendcate" class="btn btn-primary">提交</button>
+	</div>
+</div>
+
+<!--结束-->
+<!--登录-->
+
+<div class="backgroundbox1" style="display:none">
+</div>
+
+<div class="popbox1" style="display:none; text-align:right;">
+	<a class="close" id="close1">X</a>
+	<div class="control">
+		<input id="newcate1" name="username" type="text" value=""placeholder="用户名"></input>
+		<input id="newcate2" name="password" type="password" value=""placeholder="密码"></input>
+		<p class"help help-block"></p>
+		<button id="sendcate1" class="btn btn-primary">登录</button>
+	</div>
+</div>
+
+
+<!--结束-->
+
+<!--注册-->
+
+<div class="backgroundbox2" style="display:none">
+</div>
+
+<div class="popbox2" style="display:none">
+	<a class="close" id="close2">X</a>
+	<div class="control">
+    	<input id="newcate3" name="username" type="text" value=""placeholder="请输入用户名"></input>
+		<input id="newcate4" name="password1" type="password" value=""placeholder="请输入密码"></input>
+		<input id="newcate5" name="password2" type="password" value=""placeholder="请再次输入密码"></input>
+		<p class"help help-block"></p>
+		<button id="sendcate2" class="btn btn-primary" style="margin-right:-149px;">注册</button>
+	</div>
+</div>
+</div>
+</body>
+<!--结束-->
+{%endblock%}
+<!--box结束-->
+{% block content3%}
+<script>
+
+$(document).ready(function(){
+	$("#addcate").click(function(){
+		$(".backgroundbox").show();
+		$(".popbox").show();
+	});
+	$("#sendcate").click(function(){
+		var newcate = $("#newcate").val();
+		console.log(newcate);
+		$(".backgroundbox").hide();
+		$(".popbox").hide();
+		
+		$.ajax({
+				type:'POST',
+				url:'/addcate',
+				dataType:'json',
+				data:{name: newcate,csrfmiddlewaretoken: '{{csrf_token}}',}
+				})
+				.done(function(msg){
+					//alert("分类创建:" + msg.code);
+					if(msg.code == "ok")
+					{
+						$("#cate1").append('<a href="/cate/'+msg.id+'" style="font-size:14px;">'+newcate+'</a>&nbsp;&nbsp;')
+					}
+				});
+
+	});
+	$("#close").click(function(){
+		$(".backgroundbox").hide();
+		$(".popbox").hide();
+	});
+});
+
+
+
+$(document).ready(function(){
+	$("#sig").add("#sig1").click(function(){
+		$(".backgroundbox1").show();
+		$(".popbox1").show();
+	});
+	$("#sendcate1").click(function(){
+		var newcate1 = $("#newcate1").val();
+		var newcate2 = $("#newcate2").val();
+		console.log(newcate1);
+		console.log(newcate2);
+		$(".backgroundbox1").hide();
+		$(".popbox1").hide();
+		
+		$.ajax({
+				type:'POST',
+				url:'/accounts/login/',
+				dataType:'html',
+				data:{username: newcate1, password: newcate2, csrfmiddlewaretoken: '{{csrf_token}}',}
+				})
+				.done(function(msg){
+					location.reload();
+					
+				})
+				.error(function(msg){
+					location.reload();
+					
+				});
+
+	});
+	$("#close1").click(function(){
+		$(".backgroundbox1").hide();
+		$(".popbox1").hide();
+	});
+});
+
+
+
+$(document).ready(function(){
+	$("#reg").add("#reg1").click(function(){
+		$(".backgroundbox2").show();
+		$(".popbox2").show();
+	});
+	$("#sendcate2").click(function(){
+		var newcate3 = $("#newcate3").val();
+		var newcate4 = $("#newcate4").val();
+		var newcate5 = $("#newcate5").val();
+		console.log(newcate3);
+		console.log(newcate4);
+		console.log(newcate5);
+		$(".backgroundbox2").hide();
+		$(".popbox2").hide();
+		
+		$.ajax({
+				type:'POST',
+				url:'/accounts/register/',
+				dataType:'html',
+				data:{username: newcate3, password1: newcate4, password2: newcate5, csrfmiddlewaretoken: '{{csrf_token}}',}
+				})
+
+				.done(function(msg){
+					location.reload();
+					
+				})
+				.error(function(msg){
+					location.reload();
+					
+				});
+
+	});
+	$("#close2").click(function(){
+		$(".backgroundbox2").hide();
+		$(".popbox2").hide();
+	});
+});
+
+</script>
+{%endblock%}

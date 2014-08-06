@@ -1,0 +1,109 @@
+<head>
+	<meta charset="UTF-8"> 
+	<title>Djforum › 首页</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="http://v2ex.com/css/shared.css?v=3.3.2">
+    <link rel="stylesheet" type="text/css" href="http://uliweb.cpython.org/static/bootstrap/2.2.0/bootstrap.min.css?ver=2">
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/djforums.css">
+	<script src="http://www.w3school.com.cn/jquery/jquery-1.11.1.min.js"></script>
+</head>
+
+<body>
+
+<div class="content">
+<div class="box">
+</div>
+<div class="sep20"></div>
+<div class="box">
+    <div class="cell"><div class="fr"><a id="addcate">添加分类</a></div><span><strong>Djforum</strong> / 节点导航</span></div>
+    <div class="inner"><table cellpadding="0" cellspacing="0" border="0"><tbody><tr><td align="right" width="60"><span>分类</span></td><td style="line-height: 200%; padding-left: 10px;" id="cate1">
+
+{%for a in cates%}
+<a href='/cate/{{a.id}}' style='font-size:14px;'>{{a.name}}</a>&nbsp;&nbsp;
+{%endfor%}
+</div>
+</td></tr></tbody></table></div>
+
+</div>
+
+<div class="sep20"></div>
+
+<div class="box">
+{%for t in top20%}
+<div class="cell item" style=""><div style="position: absolute; margin: -10px -10px 0px 650px;"></div>
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tbody><tr>
+            
+            <td width="48" valign="top" align="center"><a href="/member/codeplay"><img src="{{MEDIA_URL}}{{t.get_photo}}" class="avatar" border="0" align="default"></a></td>
+            <td width="10"></td>
+            
+            <td width="auto" valign="middle"><span class="item_title"><a href="/topic/{{t.id}}">({{t.category.name}}){{t.subject}}</a></span>
+            <div class="sep5"></div>
+            <span class="small"><div class="votes"></div>&nbsp;•&nbsp; <strong><a href="/member/codeplay">{{t.author.username}}</a></strong> &nbsp;•&nbsp; {{t.created|timesince}} &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/orzfly">{{t.author.username}}</a></strong></span>
+            </td>
+            <td width="50" align="right" valign="middle">
+                
+                <a href="/t/120501#reply1" class="count_livid">{{t.num_views}}</a>
+                
+            </td>
+        </tr>
+    </tbody></table>
+</div>
+{%endfor%}
+	
+
+</div>
+</div>
+
+<!--box-->
+<!--content-->
+</div>
+
+<div class="backgroundbox" style="display:none">
+</div>
+
+<div class="popbox" style="display:none">
+	<a class="close" id="close">X</a>
+	<div class="control">
+		<input id="newcate" name="username" type="text" value=""placeholder="请输入分类"></input>
+		<p class"help help-block"></p>
+		<button id="sendcate" class="btn">提交</button>
+	</div>
+</div>
+
+</body>
+
+<script>
+
+$(document).ready(function(){
+	$("#addcate").click(function(){
+		$(".backgroundbox").show();
+		$(".popbox").show();
+	});
+	$("#sendcate").click(function(){
+		var newcate = $("#newcate").val();
+		console.log(newcate);
+		$(".backgroundbox").hide();
+		$(".popbox").hide();
+		
+		$.ajax({
+				type:'POST',
+				url:'/addcate',
+				dataType:'json',
+				data:{name: newcate,csrfmiddlewaretoken: '{{csrf_token}}',}
+				})
+				.done(function(msg){
+					//alert("分类创建:" + msg.code);
+					if(msg.code == "ok")
+					{
+						$("#cate1").append('<a href="/cate/'+msg.id+'" style="font-size:14px;">'+newcate+'</a>&nbsp;&nbsp;')
+					}
+				});
+
+	});
+	$("#close").click(function(){
+		$(".backgroundbox").hide();
+		$(".popbox").hide();
+	});
+});
+
+</script>

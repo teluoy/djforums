@@ -1,0 +1,99 @@
+#coding:utf-8
+from django.contrib.auth.forms import *
+from django.contrib.auth.models import *
+from django.shortcuts import render_to_response,redirect
+from django.template import RequestContext
+from django.http import HttpResponseRedirect,HttpResponse
+from .models import *
+def register(request):
+        form = UserCreationForm()
+        if request.method == 'GET':#只是刷新浏览网页为GET
+                return render_to_response('register.html',{'form':form},context_instance=RequestContext(request))
+        if request.method == 'POST':#往表单提交数据为POST
+                form = UserCreationForm(request.POST)
+                if form.is_valid():#判断是否是正确的数据（函数实现）
+                        new_user = form.save()
+                        return redirect("/")#返回到根
+                return render_to_response('register.html',{'form':form},context_instance=RequestContext(request))
+def index(request):
+	cates = Category.objects.all()
+	top20 = Topic.objects.all()[:20:-1]
+	d = {'cates' : cates,'top20':top20}
+	return render_to_response('index.html', d, context_instance=RequestContext(request))
+
+import json
+def addcate(request):
+	if request.method == 'POST':
+		name = request.POST['name']
+		a = Category.objects.filter(name=name)
+		if len(a):
+			return HttpResponse(json.dumps({'code':'no'}))
+		else:
+			n = Category()
+			n.name = request.POST['name']
+			n.save()
+			return HttpResponse(json.dumps({'code':'ok','id':n.id}))
+def cateshow(request,id):
+	cate = Category.objects.get(id=int(id))
+	topics = Topic.objects.filter(category=cate)#判断分类里传过来的类名字和数据库里的主题板块是否一样
+	d = {'topics':topics,'cate':cate}
+	return render_to_response('cateshow.html', d, context_instance=RequestContext(request))
+def addtopic(request,id):
+	if request.method =="POST":
+		cate = Category.objects.get(id=int(id))
+		t = Topic()
+		t.category = cate
+		t.subject = request.POST['subject']
+		t.content = request.POST['content']
+		t.author = User.objects.get(id=request.user.id)
+		t.save()
+		return redirect('/cate/%s'%id)
+def replytopic(request,id):
+	if request.method =="POST":
+		t = Topic.objects.get(id=int(id))
+		t.num_replys +=1
+		t.save()
+		r = Reply()
+		r.topic = t
+		r.content = request.POST['content']
+		r.author = User.objects.get(id=request.user.id)
+		r.save()
+		return redirect('/topic/%s'%id)
+def topicshow(request,id):
+	t = Topic.objects.get(id=int(id))
+	t.num_views +=1
+	t.save()
+	replys = Reply.objects.filter(topic=t)
+	d = {'t':t,'replys':replys}
+	return render_to_response('topicshow.html', d, context_instance=RequestContext(request))
+
+######
+from .forms import *
+def userinfoadmin(request):
+	u = User.objects.get(id=request.user.id)
+	'''
+	try:
+		profile = UserProfile.objects.get(user=u)
+	except:
+		profile = UserProfile(user=u)
+		profile.save()
+	'''
+	profile = UserProfile.objects.get_or_create(user=u)[0]
+	
+	d = {'u':u,'p':profile}
+	return render_to_response('userinfoadmin.html', d, context_instance=RequestContext(request))
+def updatephoto(request):
+	u = User.objects.get(id=request.user.id)
+	profile = UserProfile.objects.get(user=u)
+	if request.method == "POST":
+		p = UserProfileForm(request.POST,request.FILES,instance=profile)#POST图片数据，FILES图片内容，profile用户原始图片信息
+		if p.is_valid():
+			p.save()
+		print p
+	return redirect('/useradmin')
+
+
+
+
+
+

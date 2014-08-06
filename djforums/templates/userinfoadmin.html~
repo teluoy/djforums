@@ -1,0 +1,77 @@
+<head>
+	<meta charset="UTF-8"> 
+	<title>Djforum › 首页</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="http://v2ex.com/css/shared.css?v=3.3.2">
+    <link rel="stylesheet" type="text/css" href="http://uliweb.cpython.org/static/bootstrap/2.2.0/bootstrap.min.css?ver=2">
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/css/djforums.css">
+<link rel="stylesheet" type="text/css" media="screen" href="http://www.chinaswift.me/static/bootstrap/2.2.0/bootstrap.min.css?ver=2">
+
+	<script src="http://www.w3school.com.cn/jquery/jquery-1.11.1.min.js"></script>
+</head>
+
+<body>
+
+<div class="row-fluid">
+    <div class="span2 well">
+        
+        <a id="modify_photo" title="点击修改头像"><img src="{{MEDIA_URL}}{{p.get_photo}}" class="portrait" id="photo"></a>
+        <p>单击更改头像</p>
+        
+    </div>
+    <div class="span5">
+        <div class="box-body">
+            <table class="table table-bordered">
+<tbody><tr><th align="right" width="150">用户名</th><td>{{u.username}}</td></tr>
+<tr><th align="right" width="150">昵称</th><td>{{p.nick}}</td></tr>
+<tr><th align="right" width="150">邮件</th><td>{{p.email}}</td></tr>
+<tr><th align="right" width="150">QQ号</th><td>{{p.qq}}</td></tr>
+<tr><th align="right" width="150">超级用户</th><td><div class="ui-icon ui-icon-closethick"></div></td></tr>
+<tr><th align="right" width="150">加入时间</th><td>2014-07-03 02:05:25</td></tr>
+<tr><th align="right" width="150">上次登录</th><td>2014-07-03 02:05:25</td></tr>
+</tbody></table>
+
+            
+            <div class="box-bottom">
+            <a class="btn btn-green" href="/user/edit">编辑</a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+<!---->
+
+<div class="backgroundbox" style="display:none;">
+</div>
+
+<div class="popbox" style="display:none;width:300;height:100;padding:30px 10px 10px 10px;">
+	<a class="close" id="close">X</a>
+
+		<form action="/useradmin/updatephoto" method="POST" enctype="multipart/form-data">
+		{%csrf_token%}
+		<input id="field_image" name="photo" type="file">
+		<button class="btn btn-primary">上传</button>
+		</form>
+
+	
+</div>
+
+
+
+</body>
+
+<script>
+$(document).ready(function(){
+	$("#modify_photo").click(function(){
+		$(".backgroundbox").show();
+		$(".popbox").show();
+	});
+
+	$("#close").click(function(){
+		$(".backgroundbox").hide();
+		$(".popbox").hide();
+	});
+});
+</script>
