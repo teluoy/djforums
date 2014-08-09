@@ -1,18 +1,12 @@
-<head>
-	<meta charset="UTF-8"> 
-	<title>Djforum › 设置</title>
+{% extends "base.html" %}
+<html>
 
-	<link rel="stylesheet" href="/static/css/main.css" type="text/css" />
-	<link rel="stylesheet" href="/static/css/demos.css" type="text/css" />
-	<link rel="stylesheet" href="/static/css/jquery.Jcrop.css" type="text/css" />
-	<script src="/static/css/jquery.js"></script>
-	<script src="/static/css/jquery.min.js"></script>
-	<script src="/static/css/jquery.Jcrop.js"></script>
+{% block title0%}
+	<title>Djforum › Set</title>
+{%endblock%}
 
-    <link rel="stylesheet" type="text/css" href="/static/css/uliweb.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
-
+{% block content1%}
+<!--头像处理-->
 
 	<script type="text/javascript">
   function init_img (){
@@ -29,7 +23,6 @@
 
         xsize = $pcnt.width(),//小头像宽
         ysize = $pcnt.height();//小头像高
-
 
     $('#target').Jcrop({
       onChange: updatePreview,
@@ -71,15 +64,12 @@
           marginLeft: '-' + Math.round(rx * c.x) + 'px',
           marginTop: '-' + Math.round(ry * c.y) + 'px',
 
-
         });
       }
-
 
     };
 
   }
-
 
 </script>
 
@@ -118,17 +108,14 @@
 
 </style>
 
-</head>
-{% extends "base.html" %}
-<body>
+<!--头像处理结束-->
 
-{% block content2%}
+<!--个人信息-->
 
 <div class="sep20"></div>
 
 <div class="box" style="width:70%">
-    <div class="header"><a href="/">Djforum</a> <span class="chevron">&nbsp;›&nbsp;</span> 设置</div>
-    
+    <div class="header"><a href="/">Djforum</a> <span class="chevron">&nbsp;›&nbsp;</span>Set</div>
     
     <div class="inner">
         <form method="post" action="/UserProfile_update_save">
@@ -149,24 +136,21 @@
                 <td width="120" align="right">电子邮件</td>
                 <td width="auto" align="left"><input type="email" class="sl" name="email" value="{{p.email}}" autocomplete="off"></td>
             </tr>
-
             <tr>
-                <td width="120" align="right">QQ</td>
-                <td width="auto" align="left"><input type="text" class="sl" name="qq" value="{{p.qq}}" maxlength="32" autocomplete="off"></td>
-            </tr>
-
-            <tr>
-                <td width="120" align="right">当前头像</td>
-                <td width="auto" align="left"><img src="{{MEDIA_URL}}{{p.get_photo}}" style="width: 73px;height: 73px;"> &nbsp; <img src="{{MEDIA_URL}}{{p.get_photo}}" style="width: 48px;height: 48px;"> &nbsp; <img src="{{MEDIA_URL}}{{p.get_photo}}" style="width: 24px;height: 24px;"> &nbsp; </td>
-
-
-
-
-
+                <td width="120" align="right">个人网站</td>
+                <td width="auto" align="left"><input type="url" class="sl" name="url" value="{{p.url}}" autocomplete="off"></td>
+            </tr>      
+			<tr>
+                <td width="120" align="right">手机号码</td>
+                <td width="auto" align="left"><input type="tel" class="sl" name="tel" value="{{p.tel}}" autocomplete="off"></td>
             </tr>
             <tr>
-                <td width="120" align="right"></td>
-                <td width="auto" align="left"><input type="hidden" value="99705" name="once"><input id="modify_photo" title="点击修改头像" type="button" class="super normal button" value="上传头像"></td>
+                <td width="120" align="right">QQ号码</td>
+                <td width="auto" align="left"><input type="tel" class="sl" name="qq" value="{{p.qq}}" maxlength="32" autocomplete="off"></td>
+            </tr>
+			<tr>
+                <td width="120" align="right">个人简介</td>
+                <td width="auto" align="left"><textarea class="ml" name="bio">{{p.bio}}</textarea></td>
             </tr>
             <tr>
                 <td width="120" align="right"></td>
@@ -177,6 +161,38 @@
     </div>
 </div>
 
+<!--个人信息结束-->
+
+<!--头像-->
+<div class="sep20"></div>
+<div class="box" style="width:70%">
+    <div class="cell"><div class="fr"></div>头像上传</div>
+    <div class="cell">
+        <table cellpadding="5" cellspacing="0" border="0" width="100%">
+            <tbody>
+            <tr>
+                <td width="120" align="right">当前头像</td>
+                <td width="auto" align="left"><img src="{{MEDIA_URL}}{{p.get_photo}}" style="width: 73px;height: 73px;"> &nbsp; <img src="{{MEDIA_URL}}{{p.get_photo}}" style="width: 48px;height: 48px;"> &nbsp; <img src="{{MEDIA_URL}}{{p.get_photo}}" style="width: 24px;height: 24px;"> &nbsp; </td>
+
+            </tr>
+            <tr>
+                <td width="120" align="right"></td>
+                <td width="auto" align="left"><input type="hidden" value="99705" name="once"><input id="modify_photo" title="点击修改头像" type="button" class="super normal button" value="上传头像"></td>
+            </tr>
+        </tbody></table>
+    </div>
+    <div class="inner">
+    关于头像的规则
+    <ul>
+        <li>Zhuhy 禁止使用任何低俗或者敏感图片作为头像</li>
+        <li>如果你是男的，请不要用女人的照片作为头像，这样可能会对其他会员产生误导</li>
+    </ul>
+    </div>
+</div>
+
+<!--头像结束-->
+
+<!--密码-->
 
 <div class="sep20"></div>
 <div class="box" style="width:70%">
@@ -207,12 +223,16 @@
 
             </div>
             
-        </div>
 
-<!---->
 
-</body>
 
+        <div class="c"></div>
+        <div class="sep20"></div>
+</div>
+<!--密码结束-->
+{%endblock%}
+
+{% block content2%}
 <!--box-->
 
 <div class="backgroundbox3" style="display:none;">
@@ -252,8 +272,9 @@
 		</div>
 </div>
 
-<!--endbox-->
+<!--box结束-->
 {%endblock%}
+
 {% block content3%}
 <script>
 $(document).ready(function(){
@@ -297,3 +318,4 @@ $(document).ready(function(){
 });
 </script>
 {%endblock%}
+<html>

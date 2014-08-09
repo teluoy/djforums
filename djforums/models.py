@@ -22,22 +22,24 @@ class Topic(models.Model):#主题类
 	p =property(_get_photo)
 
 class Reply(models.Model):#回复类
-	content    = models.TextField()
-	author     = models.ForeignKey(User)
-	topic      = models.ForeignKey(Topic)
-	created    = models.DateTimeField(auto_now=True)
-	updated    = models.DateTimeField(auto_now=True)
+	content    = models.TextField()#记录
+	author     = models.ForeignKey(User)#用户
+	topic      = models.ForeignKey(Topic)#
+	created    = models.DateTimeField(auto_now=True)#创建时间
+	updated    = models.DateTimeField(auto_now=True)#更新时间
 	def _get_photo(self):
 		p = UserProfile.objects.get(user=self.author)
 		return p
 	p =property(_get_photo)
 
-######
 class UserProfile(models.Model):
 	photo      = models.ImageField(upload_to = 'photo',blank=True,null=True)
 	nick       = models.CharField(max_length=64,blank=True,null=True)
-	qq         = models.CharField(max_length=32,blank=True,null=True)
 	email      = models.CharField(max_length=1024,blank=True,null=True)
+	url        = models.CharField(max_length=64,blank=True,null=True)
+	tel        = models.CharField(max_length=64,blank=True,null=True)
+	qq         = models.CharField(max_length=64,blank=True,null=True)
+	bio        = models.CharField(max_length=64,blank=True,null=True)
 	user       = models.ForeignKey(User,unique=True)
 	def _get_photo(self):
 		if self.photo:
@@ -47,7 +49,7 @@ class UserProfile(models.Model):
 			if len(image):
 				return image[0].img
 			else:
-				return 'photo/default.jpg'
+				return 'default/default.gif'
 	get_photo =property(_get_photo)
 
 class Defaultimg(models.Model):

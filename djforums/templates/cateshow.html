@@ -1,21 +1,13 @@
 {% extends "base.html" %}
-{% block title0 %}
-<head>
-	<meta charset="UTF-8"> 
+<html>
+
+{% block title%}
     <title>Djforum › {{cate.name}}</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/uliweb.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
-	<script src="/static/css/jquery.js"></script>
+{%endblock%}
 
-	<!--tinymce-->
-	<script type="text/javascript" src="http://www.chinagame.me/static/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
-	<script type="text/javascript" src="http://www.chinagame.me/static/tinymce/js/tinymce/tinymce.min.js"></script>
-</head>
-{% endblock %}
+{% block content1%}
+<!--弹出框编辑模块-->
 
-
-{% block content2%}
 <script>
 function loadtinymce()
 {
@@ -37,11 +29,11 @@ $(document).ready(function(){
 });
 </script>
 
+<!--弹出框编辑模块结束-->
 
-<body>
+<!--创建新主题-->
+
 <div class="content">
-<div class="box">
-</div>
 <div class="sep20"></div>
 	<div class="box" style="width:70%">
 	
@@ -52,16 +44,25 @@ $(document).ready(function(){
     
     
     <div class="sep10"></div>
+	{% if user.is_authenticated %}
+	{% if user.is_superuser %}
+
+	{% else %}
     <a class="btn" id="newtopic">创建新主题</a>
-    
+    {% endif %}
+    {% endif %}
     </div>
 </div>
+
+<!--创建新主题结束-->
+
+<!--主题-->
+
 <div class="sep20"></div>
 <div class="box" style="width:70%">
 
-
-
 {%for t in topics%}
+
 <div class="cell item" style=""><div style="position: absolute; margin: -10px -10px 0px 650px;"></div>
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tbody><tr>
@@ -71,7 +72,11 @@ $(document).ready(function(){
             
             <td width="auto" valign="middle"><span class="item_title"><a href="/topic/{{t.id}}">{{t.subject}}</a></span>
             <div class="sep5"></div>
-            <span class="small"><div class="votes"></div>&nbsp;•&nbsp; <strong><a href="/member/codeplay">{{t.author.username}}</a></strong> &nbsp;•&nbsp; {{t.created}} &nbsp;•&nbsp; 最后回复来自 <strong><a href="/member/orzfly">{{t.author.username}}</a></strong></span>
+            <span class="small"><div class="votes"></div>&nbsp;•&nbsp; <strong><a href="/member/codeplay">{{t.author.username}}</a></strong> &nbsp;•&nbsp; {{t.created}} &nbsp;•&nbsp; 最后回复来自 <strong>
+			{% for r in top23 %}
+			<a href="/useradmin">{{r.author}}</a>
+			{% endfor %}
+			</strong></span>
             </td>
             <td width="50" align="right" valign="middle">
                 
@@ -85,6 +90,16 @@ $(document).ready(function(){
 	
 </div>
 </div>
+</div>
+        <div class="c"></div>
+<div class="sep20"></div>
+</div>
+<!--主题结束-->
+{%endblock%}
+
+{% block content2%}
+<!--box-->
+
 <div class="backgroundbox" style="display:none;">
 </div>
 
@@ -100,7 +115,7 @@ $(document).ready(function(){
 	
 </div>
 
-</body>
+<!--box结束-->
 {%endblock%}
 
 {% block content3%}
@@ -118,3 +133,4 @@ $(document).ready(function(){
 });
 </script>
 {%endblock%}
+</html>

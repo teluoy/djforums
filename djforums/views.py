@@ -27,17 +27,21 @@ def register(request):
 def index(request):
 	cates = Category.objects.all()
 	top20 = Topic.objects.all().order_by("-id")[:10]#根据ID倒序取出10条
-	top22 = Topic.objects.all().order_by("-num_replys")[:10]#根据回复数降序序取出10条
+	top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
+	top23 = Reply.objects.all().order_by("-author")[:1]#最后回复用户 
+	top24 =	UserProfile.objects.all().count
+	top25 = Topic.objects.all().count
+	top26 = Reply.objects.all().count
+	print request.user.is_superuser
 	if request.user.is_authenticated():
 		try:
 			u = User.objects.get(id=request.user.id)
 			top21 = UserProfile.objects.get(user=u)
-
-			d = {'cates':cates, 'top20':top20, 'top21':top21, 'top22':top22}
+			d = {'cates':cates, 'top20':top20, 'top21':top21, 'top22':top22, 'top23':top23, 'top24':top24, 'top25':top25, 'top26':top26}
 			return render_to_response('index.html', d, context_instance=RequestContext(request))
 		except:
 			pass
-	d = {'cates':cates, 'top20':top20, 'top22':top22}
+	d = {'cates':cates, 'top20':top20, 'top22':top22, 'top23':top23, 'top24':top24, 'top25':top25, 'top26':top26}
 	return render_to_response('index.html', d, context_instance=RequestContext(request))
 
 def addcate(request):
@@ -55,9 +59,17 @@ def addcate(request):
 def cateshow(request,id):
 	cate = Category.objects.get(id=int(id))
 	topics = Topic.objects.filter(category=cate).order_by("-id")
-	u = User.objects.get(id=request.user.id)
-	top21 = UserProfile.objects.get(user=u)
-	d = {'topics':topics, 'cate':cate, 'top21':top21}
+	top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
+	top23 = Reply.objects.all().order_by("-author")[:1]#最后回复用户
+	if request.user.is_authenticated():
+		try:
+			u = User.objects.get(id=request.user.id)
+			top21 = UserProfile.objects.get(user=u)
+			d = {'topics':topics, 'cate':cate, 'top21':top21, 'top22':top22, 'top23':top23}
+			return render_to_response('cateshow.html', d, context_instance=RequestContext(request))
+		except:
+			pass
+	d = {'topics':topics, 'cate':cate, 'top22':top22, 'top23':top23}
 	return render_to_response('cateshow.html', d, context_instance=RequestContext(request))
 	
 def addtopic(request,id):
@@ -88,15 +100,22 @@ def replytopic(request,id):
 
 def topicshow(request,id):
 	cates = Category.objects.all()
+	top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
 	t = Topic.objects.get(id=int(id))
 	t.num_views +=1
 	t.save()
 	replys = Reply.objects.filter(topic=t)
-	u = User.objects.get(id=request.user.id)
-	top21 = UserProfile.objects.get(user=u)
-	d = {'cates':cates, 't':t, 'replys':replys, 'top21':top21}
-	return render_to_response('topicshow.html', d, context_instance=RequestContext(request))
-		
+	if request.user.is_authenticated():
+		try:
+			u = User.objects.get(id=request.user.id)
+			top21 = UserProfile.objects.get(user=u)
+			d = {'cates':cates, 't':t, 'replys':replys, 'top21':top21, 'top22':top22}
+			return render_to_response('topicshow.html', d, context_instance=RequestContext(request))
+		except:
+			pass
+	d = {'cates':cates, 't':t, 'replys':replys, 'top22':top22}
+	return render_to_response('topicshow.html', d, context_instance=RequestContext(request))		
+
 ########################################################
 
 def userinfoadmin(request):
@@ -104,7 +123,8 @@ def userinfoadmin(request):
 	p = UserProfile.objects.get_or_create(user=u)[0]
 	u = User.objects.get(id=request.user.id)
 	top21 = UserProfile.objects.get(user=u)
-	d = {'u':u, 'p':p, 'top21':top21}
+	top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
+	d = {'u':u, 'p':p, 'top21':top21, 'top22':top22}
 	return render_to_response('userinfoadmin.html', d, context_instance=RequestContext(request))
 		
 def updatephoto(request):
@@ -117,7 +137,7 @@ def updatephoto(request):
 	return HttpResponse(json.dumps({"image":'%s' % profile.photo}))
 
 ########################################################
-
+ 
 def imgCrop(request):
 	yimage = request.POST['yimage']
 	imageFile = settings.BASE_DIR + yimage
@@ -138,11 +158,11 @@ def imgCrop(request):
 ########################################################
 
 def upload(request):
-	p = Defaultimg.objects.all()
-	u = User.objects.get(id=request.user.id)
-	top21 = UserProfile.objects.get(user=u)
-	d = {'p':p, 'top21':top21}
-	return render_to_response('upload.html', d, context_instance=RequestContext(request))
+		p = Defaultimg.objects.all()# 获取随机头像
+		top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
+		d = {'p':p, 'top22':top22}
+		return render_to_response('upload.html', d, context_instance=RequestContext(request))
+
 
 def uploadphoto(request):
 	if request.method == "POST":
@@ -158,9 +178,35 @@ def UserProfile_update_save(request):
 	b = UserProfile.objects.get_or_create(user=u)[0]
 	b.nick = request.POST['nick']
 	b.email = request.POST['email']
+	b.url = request.POST['url']
+	b.tel = request.POST['tel']
 	b.qq = request.POST['qq']
+	b.bio = request.POST['bio']
 	b.save()
 	return redirect("/useradmin")
 
 ########################################################
+'''
+def topic_delete(request):
+	if 
+		try:
+			Topic.objects.all().delete()
+			return redirect('/')
+		except:
+			pass
+	return redirect('/')
 
+def topic_update(request):
+	u = User.objects.get(id=request.user.id)
+	b = Topic.objects.get(user=u)
+	d = {'b':b}
+	return render_to_response('update.html', d, context_instance=RequestContext(request))
+
+def topic_update_save(request):
+
+	b.subject = request.POST['a']
+	b.save()
+	return redirect('/')
+'''
+
+########################################################

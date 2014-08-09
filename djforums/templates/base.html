@@ -1,7 +1,28 @@
 <html>
-<meta charset="UTF-8"> 
-{% block title0%}{%endblock%}
-<!--标题栏-->  
+<!--头-->  
+<head>
+	<meta charset="UTF-8"> 
+	{% block title%}{%endblock%}
+
+	<link rel="stylesheet" href="/static/css/main.css" type="text/css" />
+	<link rel="stylesheet" href="/static/css/demos.css" type="text/css" />
+	<link rel="stylesheet" href="/static/css/jquery.Jcrop.css" type="text/css" />
+
+	<script src="/static/js/jquery.js"></script>
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/js/jquery.Jcrop.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/uliweb.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
+
+	<tinymce>
+	<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+
+	<endtinymce>
+</head>
+
+<body>
 <div id="Top"style="margin:0 auto; width:100%; height:38px; background-size: 44px 44px; background-image: url("/static/img/top_light.png");">
 
         <div class="content">
@@ -16,10 +37,18 @@
                     <td width="520" align="right" style="padding-top: 2px;font-size: 15px;">
 						<a href="/" class="top">首页</a>&nbsp;&nbsp;&nbsp;
 						{% if user.is_authenticated %}
-  						<a href="/accounts/logout/?next=/">注销</a>&nbsp;&nbsp;&nbsp;<a href="/upload">随机头像</a>&nbsp;&nbsp;&nbsp;<a href="/useradmin">{{user.username}}</a>&nbsp;&nbsp;&nbsp;<a href="/useradmin">设置</a>
+						<a>{{user.username}}</a>&nbsp;&nbsp;&nbsp;
+						{% if user.is_superuser %}
+						<a href="/upload">随机头像</a>&nbsp;&nbsp;&nbsp;
 						{% else %}
-  						<a  id="reg" class="top">注册</a>&nbsp;&nbsp;&nbsp;<a  id="sig" class="top">登录</a>
+						<a href="/useradmin">设置</a>&nbsp;&nbsp;&nbsp;
 						{% endif %}
+  						<a href="/accounts/logout/?next=/">注销</a>
+						{% else %}
+  						<a  id="reg" class="top">注册</a>&nbsp;&nbsp;&nbsp;
+						<a  id="sig" class="top">登录</a>
+						{% endif %}
+
 					</td>
                 </tr>
             </tbody></table>
@@ -27,36 +56,36 @@
         </div>
 </div>
 
-<div id="Wrapper">
-<div class="content">
-<!--结束-->
-
-{% block title%}{%endblock%}
-<!--右边栏-->   
-<!--右登录信息-->   
-<div id="Rightbar">
+    <div id="Wrapper">
+        <div class="content">
+            
+            <div id="Leftbar"></div>
+            <div id="Rightbar">
                 <div class="sep20"></div>
-   
+                
+                    
 {% if user.is_authenticated %}
 
                     <div class="box">
                         <div class="cell">
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tbody><tr>
-									
+									{% if user.is_superuser %}
+                                    <td width="10" valign="top"></td>
+                                    <td width="auto" align="left"><span class="bigger">{{user.username}}</span></td>
+									{% else %}
                                     <td width="48" valign="top"><a href="/useradmin"><img src="{{MEDIA_URL}}{{top21.get_photo}}" class="avatar" border="0" align="default" style="width: 48px;height: 48px;"></a></td>
 									
                                     <td width="10" valign="top"></td>
-                                    <td width="auto" align="left"><span class="bigger"><a href="/useradmin">{{user.username}}</a></span>
-                                        
-                                    </td>
+                                    <td width="auto" align="left"><span class="bigger"><a href="/useradmin">{{user.username}}</a></span></td>
+									{% endif %}
                                 </tr>
                             </tbody></table>
                             <div class="sep10"></div>
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tbody><tr>
-                                    <td width="33%" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">0</span><div class="sep3"></div><span class="fade">节点收藏</span></a></td>
-                                    <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">0</span><div class="sep3"></div><span class="fade">主题收藏</span></a></td>
+                                    <td width="33%" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">0</span><div class="sep3"></div><span class="fade"> 主题数</span></a></td>
+                                    <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">0</span><div class="sep3"></div><span class="fade">回复数</span></a></td>
                                     <td width="33%" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">0</span><div class="sep3"></div><span class="fade">特别关注</span></a></td>
                                 </tr>
                             </tbody></table>
@@ -83,41 +112,55 @@
                         </div>
                     </div>
 {% endif %}
-<!--结束-->
 
-{% block content0%}{%endblock%}
-
-<!--社区运行状况-->
 <div class="sep20"></div>
-<div class="box">
-    <div class="cell"><span class="fade">社区运行状况</span></div>
-    <div class="cell">
-        <table cellpadding="5" cellspacing="0" border="0" width="100%">
-            <tbody><tr>
-                <td width="50" align="right"><span class="gray">会员: </span></td>
-                <td width="auto" align="left"><strong>0</strong></td>
-            </tr>
-            <tr>
-                <td width="50" align="right"><span class="gray">主题: </span></td>
-                <td width="auto" align="left"><strong>0</strong></td>
-            </tr>
-            <tr>
-                <td width="50" align="right"><span class="gray">回复: </span></td>
-                <td width="auto" align="left"><strong>0</strong></td>
-            </tr>
-        </tbody></table>
+<div class="box" id="TopicsHot">
+    <div class="cell"><span class="fade">热议主题</span></div>
+{%for e in top22%}
+    <div class="cell from_37640 hot_t_123949">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tbody><tr>
+            <td width="24" valign="middle" align="center">
+                <a href="/topic/{{e.id}}"><img src="{{MEDIA_URL}}{{e.p.get_photo}}" class="avatar" border="0" align="default" style="width: 24px;height: 24px;"></a>
+            </td>
+            <td width="10"></td>
+            <td width="auto" valign="middle">
+                <span class="item_hot_topic_title">
+
+                <a href="/topic/{{e.id}}">{{e.subject}}</a>
+
+                </span>
+            </td>
+        </tr>
+    </tbody></table>
     </div>
-    
+{%endfor%}
+
 </div>
-<div class="sep20"></div>
-       
+{% block content0%}{%endblock%}   
             </div>
-<!--结束-->
-<!--右边栏结束-->
 {% block content1%}{%endblock%}
 
 {% block content2%}{%endblock%}
 
 {% block content3%}{%endblock%}
-hello everybody !
-</html>
+</body>
+<!--结尾结束-->
+<div id="Bottom">
+        <div class="content">
+            <div class="inner">
+                <div class="sep10"></div>
+                    <div class="fr">
+                        <a href="https://www.digitalocean.com/?refcode=1b51f1a7651d" target="_blank"><img src="/static/img/do.png" width="64" border="0" alt="DigitalOcean"></a>
+                    </div>
+                    <strong><a href="/about" class="dark" target="_self">关于</a> &nbsp; <span class="snow">·</span> &nbsp; <a href="/faq" class="dark" target="_self">FAQ</a> &nbsp; <span class="snow">·</span> &nbsp; <a href="/mission" class="dark" target="_self">我们的愿景</a> &nbsp; <span class="snow">·</span> &nbsp; <a href="/ip" class="dark" target="_self">IP 查询</a> &nbsp; <span class="snow">·</span> &nbsp; <a href="https://workspace.v2ex.com/" class="dark" target="_blank">工作空间</a> &nbsp; <span class="snow">·</span> &nbsp; <a href="/advertise" class="dark" target="_self">广告投放</a> &nbsp; <span class="snow">·</span> &nbsp; <a href="http://livid.v2ex.com/" class="dark" target="_blank">博客</a> &nbsp; <span class="snow">·</span> &nbsp; <a href="/start" class="dark" target="_blank">上网首页</a> &nbsp; <span class="snow">·</span> &nbsp; 6 人在线</strong> &nbsp; <span class="fade">最高记录 60</span> &nbsp; <span class="snow">·</span> &nbsp; <a href="/select/language"><img src="/static/img/lang_zhcn_32.png" align="absmiddle" border="0" width="20" alt=""></a>
+                    <div class="sep20"></div>
+                    Lovingly made by <b>Zhuhy</b>
+                    <div class="sep20"></div>
+                    <span class="small fade">♥ Think you very much !<br>♥ Do have faith in what you're doing.</span>
+                <div class="sep10"></div>
+            </div>
+        </div>
+    </div>
+<!--结尾结束-->
+

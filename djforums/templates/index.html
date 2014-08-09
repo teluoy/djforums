@@ -1,62 +1,56 @@
-
-<head>
-	<meta charset="UTF-8"> 
-	<title>Djforum › 首页</title>
-
-    <link rel="stylesheet" type="text/css" href="/static/css/uliweb.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
-	<script src="/static/css/jquery.js"></script>
-
-</head>
-
-
 {% extends "base.html" %}
+<html>
 
-<!--标题栏-->  
-
-<!--结束-->
-
-<!--偏右侧边栏-->
-
-<body>
-{% block content0%}
-
-<div class="sep20"></div>
-<!--热议主题-->
-<div class="box" id="TopicsHot">
-    <div class="cell"><span class="fade">热议主题</span></div>
-{%for e in top22%}
-    <div class="cell from_37640 hot_t_123949">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tbody><tr>
-            <td width="24" valign="middle" align="center">
-                <a href="/topic/{{e.id}}"><img src="{{MEDIA_URL}}{{e.p.get_photo}}" class="avatar" border="0" align="default" style="width: 24px;height: 24px;"></a>
-            </td>
-            <td width="10"></td>
-            <td width="auto" valign="middle">
-                <span class="item_hot_topic_title">
-
-                <a href="/topic/{{e.id}}">{{e.subject}}</a>
-
-                </span>
-            </td>
-        </tr>
-    </tbody></table>
-    </div>
-{%endfor%}
-</div>
-
-<!--结束-->
+{% block title%}
+	<title>Djforum › Home</title>
 {%endblock%}
 
+{% block content0%}
+<!--社区运行状况-->
+<div class="sep20"></div>
+<div class="box">
+    <div class="cell"><span class="fade">社区运行状况</span></div>
+    <div class="cell" style="hight:400px;">
+        <table cellpadding="5" cellspacing="0" border="0" width="100%">
+            <tbody><tr>
+                <td width="50" align="right"><span class="gray">会员: </span></td>
+                <td width="auto" align="left"><strong>{{top24}}</strong></td>
+            </tr>
+            <tr>
+                <td width="50" align="right"><span class="gray">主题: </span></td>
+                <td width="auto" align="left"><strong>{{top25}}</strong></td>
+            </tr>
+            <tr>
+                <td width="50" align="right"><span class="gray">回复: </span></td>
+                <td width="auto" align="left"><strong>{{top26}}</strong></td>
+            </tr>
+        </tbody></table>
 
-<!--结束-->
+    </div>
+</div>
 
-{% block content2%}
+
+<!--社区运行状况结束-->
+{%endblock%}
+
+{% block content1%}
+<!--首页背景-->      
+<style>
+body{
+
+	background-image: url("/static/img/bj.jpg");
+}
+</style>
+<!--首页背景结束-->
+
+<!--添加分类-->
 <div class="sep20"></div>
 <div class="box"style="width:70%">
-    <div class="cell"><div class="fr"><a id="addcate">添加分类</a></div><span><strong>Djforum</strong> / 节点导航</span></div>
+    <div class="cell"><div class="fr">
+	{% if user.is_superuser %}
+	<a id="addcate">添加分类</a>
+	{% endif %}
+	</div><span><strong>Djforum</strong> / 节点导航</span></div>
     <div class="inner"><table cellpadding="0" cellspacing="0" border="0"><tbody><tr><td align="right" width="60"><span>分类</span></td><td style="line-height: 200%; padding-left: 10px;" id="cate1">
 
 {%for a in cates%}
@@ -67,10 +61,12 @@
 
 </div>
 
-
 <div class="sep20"></div>
+<!--添加分类结束-->
 
-<div class="box" style="width:70%">
+<!--主题-->
+<div class="box"style="width:70%">
+
 {%for t in top20%}
 <div class="cell item" style=""><div style="position: absolute; margin: -10px -10px 0px 650px;"></div>
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -81,7 +77,11 @@
             
             <td width="auto" valign="middle"><span class="item_title"><a href="/topic/{{t.id}}">({{t.category.name}}){{t.subject}}</a></span>
             <div class="sep5"></div>
-            <span class="small"><div class="votes"></div>&nbsp;•&nbsp; <strong><a href="/useradmin">{{t.author.username}}</a></strong> &nbsp;•&nbsp; {{t.created|timesince}} &nbsp;•&nbsp; 最后回复来自 <strong><a href="/useradmin">{{t.author.username}}</a></strong></span>
+            <span class="small"><div class="votes"></div>&nbsp;•&nbsp; <strong><a href="/useradmin">{{t.author.username}}</a></strong> &nbsp;•&nbsp; {{t.created|timesince}} &nbsp;•&nbsp; 最后回复来自 <strong>
+			{% for r in top23 %}
+			<a href="/useradmin">{{r.author}}</a>
+			{% endfor %}
+			</strong></span>
             </td>
             <td width="50" align="right" valign="middle">
                 
@@ -92,13 +92,23 @@
     </tbody></table>
 </div>
 {%endfor%}
-	
+
 
 </div>
-</div>
+                        
+        </div>
 
+        <div class="c"></div>
+        <div class="sep20"></div>
+    	</div>
+<!--主题结束-->
+
+{%endblock%}
+
+{% block content2%}
 <!--box-->
-<!--分类-->
+
+<!--添加分类-->
 
 <div class="backgroundbox" style="display:none">
 </div>
@@ -112,7 +122,8 @@
 	</div>
 </div>
 
-<!--结束-->
+<!--添加分类结束-->
+
 <!--登录-->
 
 <div class="backgroundbox1" style="display:none">
@@ -128,8 +139,7 @@
 	</div>
 </div>
 
-
-<!--结束-->
+<!--登录结束-->
 
 <!--注册-->
 
@@ -147,13 +157,14 @@
 	</div>
 </div>
 </div>
-</body>
-<!--结束-->
-{%endblock%}
+
+<!--注册结束-->
+
 <!--box结束-->
+{%endblock%}
+
 {% block content3%}
 <script>
-
 $(document).ready(function(){
 	$("#addcate").click(function(){
 		$(".backgroundbox").show();
@@ -185,8 +196,6 @@ $(document).ready(function(){
 		$(".popbox").hide();
 	});
 });
-
-
 
 $(document).ready(function(){
 	$("#sig").add("#sig1").click(function(){
@@ -223,8 +232,6 @@ $(document).ready(function(){
 	});
 });
 
-
-
 $(document).ready(function(){
 	$("#reg").add("#reg1").click(function(){
 		$(".backgroundbox2").show();
@@ -248,11 +255,17 @@ $(document).ready(function(){
 				})
 
 				.done(function(msg){
-					location.reload();
+
+					window.location.href="/useradmin";
+					window.location.href="/"
+					//location.reload('/useramdin');
 					
 				})
 				.error(function(msg){
-					location.reload();
+
+					window.location.href="/useradmin";
+					window.location.href="/"
+					//location.reload('/useramdin');
 					
 				});
 
@@ -265,3 +278,4 @@ $(document).ready(function(){
 
 </script>
 {%endblock%}
+</html>

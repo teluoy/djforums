@@ -31,5 +31,9 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     url(r'^media(?P<path>.*)$', 'django.views.static.serve',{'document_root':settings.MEDIA_ROOT,'show_indexes':True}),
 
+#    url(r'^topic_delete$', 'zhyblog.views.topic_delete'),
+#    url(r'^topic_update$', 'zhyblog.views.topic_update'),
+#    url(r'^topic_update_save$', 'zhyblog.views.topic_update_save'),
+
     url(r'^admin/', include(admin.site.urls)),
 )	

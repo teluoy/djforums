@@ -1,6 +1,5 @@
 body{
 	background-color: #e2e2e2;
-	background-image: url("/static/img/bj.jpg");
 }
 .backgroundbox{
 	width:100%;
@@ -171,7 +170,14 @@ input[type=email]{
 	height:25px;
 	line-height:25px;
 }
-
+input[type=url]{
+	height:25px;
+	line-height:25px;
+}
+input[type=tel]{
+	height:25px;
+	line-height:25px;
+}
 
 .fade {
 	opacity: 1;
@@ -190,8 +196,6 @@ input[type=email]{
 	padding-top: 9px;
 	padding-bottom: 9px;
 }
-
-
 
 
 /* Selection Border */

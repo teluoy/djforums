@@ -1,23 +1,19 @@
-<head>
-	<meta charset="UTF-8"> 
-	<title>Djforum › 首页</title>
-
-    <link rel="stylesheet" type="text/css" href="/static/css/uliweb.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
-	<script src="/static/css/jquery.js"></script>
-
-</head>
 {% extends "base.html" %}
-<body>
-{% block content2%}
+<html>
+
+{% block title%}
+	<title>Djforum › Home</title>
+{%endblock%}
+
+
+{% block content1%}
+<!--随机头像-->
+
 <div class="sep20"></div>
 <div class="box"style="width:70%; padding-top:32px;">
 
-
- 
        	{%for x in p%}
-		<img src="{{MEDIA_URL}}{{x.img}}">
+		<a id="delete_picture" title="点击删除头像"><img src="{{MEDIA_URL}}{{x.img}}"></a>
 		{%endfor%}
 		<div class="left_" align="left" style="padding-top:32px; padding-left:32px">
 		<form action="/uploadphoto" method="POST" enctype="multipart/form-data">
@@ -27,7 +23,12 @@
 		<button class="super normal button">上传</button>
 		</form>
 		</div>
-
 </div>
-</body>
+
+        </div>
+        <div class="c"></div>
+        <div class="sep20"></div>
+    	</div>
+<!--随机头像结束-->
 {% endblock %}
+</html>

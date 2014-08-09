@@ -1,20 +1,13 @@
 {% extends "base.html" %}
-{% block title0 %}
-<head>
-	<meta charset="UTF-8"> 
+<html>
+
+{% block title%}
 	<title>{{t.category.name}} › {{t.subject}}</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/uliweb.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
-	<script src="/static/css/jquery.js"></script>
+{%endblock%}
 
-<!--tinymce-->
-<script type="text/javascript" src="http://www.chinagame.me/static/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
-<script type="text/javascript" src="http://www.chinagame.me/static/tinymce/js/tinymce/tinymce.min.js"></script>
+{% block content1%}
+<!--弹出框编辑模块-->
 
-</head>
-{% endblock %}
-{% block content2%}
 <script>
 function loadtinymce()
 {
@@ -36,41 +29,57 @@ $(document).ready(function(){
 });
 </script>
 
+<!--弹出框编辑模块结束-->
 
-<body>
+<!--主题块-->
 
 <div class="content">
-<div class="box">
-</div>
+
 <div class="sep20"></div>
-	<div class="box">
-	
-	</div>
+
 	
 	<div class="box" style="width:70%" style="border-bottom: 0px;">
     <div class="header">
-    <a href="/cate/{{t.id}}">{{t.category.name}}</a> <span class="chevron">&nbsp;›&nbsp;</span> <a>{{t.subject}}</a>
+    <a href="/">Djforum</a>&nbsp;›&nbsp;<a href="/cate/{{t.category.id}}">{{t.category.name}}</a> <span class="chevron">&nbsp;›&nbsp;</span> <a>{{t.subject}}</a>
     <div class="sep10"></div>
     <h1>{{t.subject}}</h1>
-    <div id="topic_120428_votes" class="votes">
-<a href="javascript:" onclick="upVoteTopic(120428);" class="vote"><li class="icon-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(120428);" class="vote"><li class="icon-chevron-down"></li></a></div> &nbsp; <small class="gray"><a href="/member/lezhou">{{t.author}}</a> · {{t.created}} · {{t.num_views}} 次点击 &nbsp; </small>
+<div id="topic_126849_votes" class="votes">
+<a href="javascript:" onclick="upVoteTopic(126849);" class="vote"><li class="fa fa-chevron-up"></li></a> &nbsp;<a href="javascript:" onclick="downVoteTopic(126849);" class="vote"><li class="fa fa-chevron-down"></li></a></div> &nbsp; <small class="gray"><a href="">{{t.author}}</a> · {{t.created}} · {{t.num_views}} 次点击 &nbsp; </small>
     </div>
     
+
+
     <div class="cell">
         <div class="topic_content">{{t.content|safe}}</div>
     </div>
    
-  
-    <div class="topic_buttons"><div class="fr gray f11" style="line-height: 12px; padding-top: 3px; text-shadow: 0px 1px 0px #fff;">{{t.num_views}} 次点击 &nbsp;∙&nbsp; &nbsp; </div> &nbsp;<a href="#;" onclick="window.open('https://twitter.com/share?url=http://www.v2ex.com/t/120428?r\u003Dzhuhy&amp;related=v2ex&amp;hashtags=mbp&amp;text=请问如何清洗 MacBook pro 的键盘', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'twitter.com');" class="tb">Tweet</a> &nbsp;<a href="#;" onclick="window.open('http://service.weibo.com/share/share.php?url=http://www.v2ex.com/t/120428?r\u003Dzhuhy&amp;title=V2EX%20-%20请问如何清洗 MacBook pro 的键盘', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'weibo.com');" class="tb">Weibo</a> &nbsp;<a href="#;" onclick="if (confirm('确定不想再看到这个主题？')) { location.href = '/ignore/topic/120428?once=34863'; }" class="tb">忽略主题</a> &nbsp;<div id="topic_thank"><a href="#;" onclick="if (confirm('你确定要向本主题创建者发送谢意？')) { thankTopic(120428, 'ngkuuqustlcvssultgjpdkxmsnxywsbm'); }" class="tb">感谢</a></div></div>
+    <div class="topic_buttons"><div class="fr gray f11" style="line-height: 12px; padding-top: 3px; text-shadow: 0px 1px 0px #fff;">{{t.num_views}} 次点击 &nbsp;∙&nbsp; &nbsp; </div> &nbsp;
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
+{% else %}
+<a href="#;" onclick="window.open('http://service.weibo.com/share/share.php?url=http://www.v2ex.com/t/120428?r\u003Dzhuhy&amp;title=V2EX%20-%20请问如何清洗 MacBook pro 的键盘', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'weibo.com');" class="tb">Weibo
+</a> &nbsp;
+<a href="#;" onclick="window.open('https://twitter.com/share?url=http://www.v2ex.com/t/120428?r\u003Dzhuhy&amp;related=v2ex&amp;hashtags=mbp&amp;text=请问如何清洗 MacBook pro 的键盘', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'twitter.com');" class="tb">Qzone
+</a> &nbsp;
+
+<a href="/cate/{{t.category.id}}" onclick="if (confirm('确定不想再看到这个主题？')) { location.href = '/topic_delete'; }" class="tb">忽略主题
+</a> &nbsp;
+
+<a href="#;" onclick="if (confirm('确定想要编辑这个主题？')) { location.href = '/topic_edit'; }" class="tb">编辑主题
+</a>
+{% endif %}
+{% endif %}
+</div>
 </div>
 
 <div class="sep20"></div>
 	
+<!--主题块结束-->
 
-<!--reply-->
+<!--回复-->
 
 <div class="box"style="width:70%">
-<div class="cell"><div class="fr" style="margin: -3px -5px 0px 0px;"><a href="/tag/zsh" class="tag"><li class="icon-tag"></li> zsh</a><a href="/tag/fish" class="tag"><li class="icon-tag"></li> fish</a><a href="/tag/配合" class="tag"><li class="icon-tag"></li> 配合</a></div>
+<div class="cell"><div class="fr" style="margin: -3px -5px 0px 0px;"><a href="" class="tag"><li class="icon-tag"></li>移动</a><a href="" class="tag"><li class="icon-tag"></li>手机</a><a href="" class="tag"><li class="icon-tag"></li>平板</a></div>
     <span class="gray">{{t.num_replys}} 回复 &nbsp;<strong class="snow">|</strong> &nbsp;直到 {{t.created}}</span>
 </div>
 
@@ -94,53 +103,42 @@ $(document).ready(function(){
 
 </div>
 {%endfor%}
-
-
 </div>
+</div>
+
+<!--回复结束-->
+
+<!--回帖-->
 <div class="sep20"></div>
-<div class="box"style="width:70%; text-align:left;">
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
 
-<a class="tb" id="newtopic">回帖</a>
+	{% else %}
+<div class="box" style="width:70%;" >
+    <div class="cell"><div class="fr"><a href="#"><strong>↑</strong> 回到顶部</a></div>
+        添加一条新回复
+    </div>
+    <div class="cell">
+	<form method="POST" action="/topic/{{t.id}}/replytopic">
+	{%csrf_token%}
+    <textarea name="content" maxlength="10000" class="mll" id="reply_content" style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 112px;"></textarea>
+    <div class="sep10"></div>
+    <div class="fr"><div class="sep5"></div><span class="gray">请尽量使用文明用语</span></div>
+    <input type="submit" value="回复" class="super normal button">
+    </form>
 
+    </div>
+    <div class="inner">
+        <div class="fr"><a href="/">← Zhuhy</a></div>
+        &nbsp;
+    </div>
 </div>
+{% endif %}
+{% endif %}
+<!--回帖结束-->
 </div>
-
-
-
-<!---->
-
-<div class="backgroundbox" style="display:none;">
+        <div class="c"></div>
+        <div class="sep20"></div>
 </div>
-
-<div class="popbox" style="display:none;width:600;height:450;padding:30px 10px 10px 10px;">
-	<a class="close" id="close">X</a>
-
-		<form action="/topic/{{t.id}}/replytopic" method="POST">
-		{%csrf_token%}
-
-		<textarea style="height:250px;" name="content"></textarea>
-		<button class="btn btn-primary">发表</button>
-		</form>
-
-	
-</div>
-
-
-
-</body>
 {%endblock%}
-{% block content3%}
-<script>
-$(document).ready(function(){
-	$("#newtopic").click(function(){
-		$(".backgroundbox").show();
-		$(".popbox").show();
-	});
-
-	$("#close").click(function(){
-		$(".backgroundbox").hide();
-		$(".popbox").hide();
-	});
-});
-</script>
-{%endblock%}
+</html>
