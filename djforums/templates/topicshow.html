@@ -61,12 +61,10 @@ $(document).ready(function(){
 </a> &nbsp;
 <a href="#;" onclick="window.open('https://twitter.com/share?url=http://www.v2ex.com/t/120428?r\u003Dzhuhy&amp;related=v2ex&amp;hashtags=mbp&amp;text=请问如何清洗 MacBook pro 的键盘', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'twitter.com');" class="tb">Qzone
 </a> &nbsp;
-
-<a href="/cate/{{t.category.id}}" onclick="if (confirm('确定不想再看到这个主题？')) { location.href = '/topic_delete'; }" class="tb">忽略主题
-</a> &nbsp;
-
-<a href="#;" onclick="if (confirm('确定想要编辑这个主题？')) { location.href = '/topic_edit'; }" class="tb">编辑主题
-</a>
+{% if top21.user == t.author %}
+<a href="#;" onclick="if (confirm('确定不想再看到这个主题？')) { location.href = '/topic_delete/{{t.id}}'; }" class="tb">删除主题</a> &nbsp;
+<a href="#;" onclick="if (confirm('确定想要编辑这个主题？'))" class="tb" id="topic_update">编辑主题</a>
+{% endif %}
 {% endif %}
 {% endif %}
 </div>
@@ -140,5 +138,42 @@ $(document).ready(function(){
         <div class="c"></div>
         <div class="sep20"></div>
 </div>
+{%endblock%}
+
+{% block content2%}
+<!--box-->
+
+<div class="backgroundbox" style="display:none;">
+</div>
+
+<div class="popbox" style="display:none;width:600;height:500;padding:30px 10px 10px 10px;">
+	<a class="close" id="close">X</a>
+
+		<form action="/topic_update/{{t.id}}" method="POST">
+		{%csrf_token%}
+		<input style="width:600" type="text" class="form-control" name="subject" value="{{t.subject}}">
+		<textarea style="height:250px;" name="content">{{t.content}}</textarea>
+		<button class="btn btn-primary">更新</button>
+		</form>
+	
+</div>
+
+<!--box结束-->
+{%endblock%}
+
+{% block content3%}
+<script>
+$(document).ready(function(){
+	$("#topic_update").click(function(){
+		$(".backgroundbox").show();
+		$(".popbox").show();
+	});
+
+	$("#close").click(function(){
+		$(".backgroundbox").hide();
+		$(".popbox").hide();
+	});
+});
+</script>
 {%endblock%}
 </html>

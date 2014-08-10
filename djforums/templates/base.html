@@ -16,10 +16,9 @@
     <link rel="stylesheet" type="text/css" href="/static/css/shared.css">
     <link rel="stylesheet" type="text/css" href="/static/css/djforums.css">
 
-	<tinymce>
+	<!--tinymce-->
 	<script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
-
-	<endtinymce>
+	<!--endtinymce-->
 </head>
 
 <body>
@@ -77,15 +76,19 @@
                                     <td width="48" valign="top"><a href="/useradmin"><img src="{{MEDIA_URL}}{{top21.get_photo}}" class="avatar" border="0" align="default" style="width: 48px;height: 48px;"></a></td>
 									
                                     <td width="10" valign="top"></td>
+									{% if top21.nick != None %}
+                                    <td width="auto" align="left"><span class="bigger"><a href="/useradmin">{{top21.nick}}</a></span></td>
+									{% else %}
                                     <td width="auto" align="left"><span class="bigger"><a href="/useradmin">{{user.username}}</a></span></td>
+									{% endif %}
 									{% endif %}
                                 </tr>
                             </tbody></table>
                             <div class="sep10"></div>
                             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                                 <tbody><tr>
-                                    <td width="33%" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">0</span><div class="sep3"></div><span class="fade"> 主题数</span></a></td>
-                                    <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">0</span><div class="sep3"></div><span class="fade">回复数</span></a></td>
+                                    <td width="33%" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">{{top27}}</span><div class="sep3"></div><span class="fade"> 主题数</span></a></td>
+                                    <td width="34%" style="border-left: 1px solid rgba(100, 100, 100, 0.4); border-right: 1px solid rgba(100, 100, 100, 0.4);" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">{{top28}}</span><div class="sep3"></div><span class="fade">回复数</span></a></td>
                                     <td width="33%" align="center"><a href="" class="dark" style="display: block;"><span class="bigger">0</span><div class="sep3"></div><span class="fade">特别关注</span></a></td>
                                 </tr>
                             </tbody></table>

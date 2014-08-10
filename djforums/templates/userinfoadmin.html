@@ -195,22 +195,26 @@
 <!--密码-->
 
 <div class="sep20"></div>
+
+
 <div class="box" style="width:70%">
     <div class="cell"><div class="fr"></div>更改密码</div>
     <div class="inner">
-        <form method="post" action="/settings/password">
+        <form method="post" action="/change_password">
+
+		{%csrf_token%}
         <table cellpadding="5" cellspacing="0" border="0" width="100%">
             <tbody><tr>
                 <td width="120" align="right">当前密码</td>
-                <td width="auto" align="left"><input type="password" class="sl" name="password_current" value=""></td>
+                <td width="auto" align="left"><input type="password" class="sl" name="oldpassword" value=""></td>
             </tr>
             <tr>
                 <td width="120" align="right">新密码</td>
-                <td width="auto" align="left"><input type="password" class="sl" name="password_new" value=""></td>
+                <td width="auto" align="left"><input type="password" class="sl" name="newpassword" value=""></td>
             </tr>
             <tr>
                 <td width="120" align="right">再次输入新密码</td>
-                <td width="auto" align="left"><input type="password" class="sl" name="password_again" value=""></td>
+                <td width="auto" align="left"><input type="password" class="sl" name="newpassword1" value=""></td>
             </tr>
             <tr>
                 <td width="120" align="right"></td>
