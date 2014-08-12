@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 <html>
 
-{% block title0%}
+{% block title%}
 	<title>Djforum › Set</title>
 {%endblock%}
 
@@ -196,40 +196,37 @@
 
 <div class="sep20"></div>
 
-
 <div class="box" style="width:70%">
     <div class="cell"><div class="fr"></div>更改密码</div>
     <div class="inner">
-        <form method="post" action="/change_password">
 
-		{%csrf_token%}
+        <form method="post" action="/password/change">
+		{% csrf_token %}
         <table cellpadding="5" cellspacing="0" border="0" width="100%">
             <tbody><tr>
-                <td width="120" align="right">当前密码</td>
-                <td width="auto" align="left"><input type="password" class="sl" name="oldpassword" value=""></td>
+                <td width="120" align="right">您的旧密码</td>
+                <td width="auto" align="left"><input id="id_old_password" name="old_password" type="password" /></td>
             </tr>
             <tr>
-                <td width="120" align="right">新密码</td>
-                <td width="auto" align="left"><input type="password" class="sl" name="newpassword" value=""></td>
+                <td width="120" align="right">输入新密码</td>
+                <td width="auto" align="left"><input id="id_new_password1" name="new_password1" type="password" /></td>
             </tr>
             <tr>
-                <td width="120" align="right">再次输入新密码</td>
-                <td width="auto" align="left"><input type="password" class="sl" name="newpassword1" value=""></td>
+                <td width="120" align="right">新密码确认</td>
+                <td width="auto" align="left"><input id="id_new_password2" name="new_password2" type="password" /></td>
             </tr>
             <tr>
                 <td width="120" align="right"></td>
-                <td width="auto" align="left"><input type="hidden" value="99705" name="once"><input type="submit" class="super normal button" value="更改密码"></td>
+                <td width="auto" align="left"><input type="submit" class="super normal button" value="更改密码"></td>
             </tr>
         </tbody></table>
         </form>
+
     </div>
 </div>
 
             </div>
             
-
-
-
         <div class="c"></div>
         <div class="sep20"></div>
 </div>

@@ -23,13 +23,13 @@ def register(request):
                         form.save()
                         new_user = authenticate(username=request.POST['username'], password=request.POST['password1'])
                         login(request, new_user)
-                        return redirect("/useradmin")#返回到userinfoadmin函数
+                        return redirect("/useradmin")
                 return render_to_response('register.html',{'form':form},context_instance=RequestContext(request))
 
 def index(request):
 	cates = Category.objects.all()
 	top20 = Topic.objects.all().order_by("-id")[:10]#根据ID倒序取出10条
-	top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
+	top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出9条
 	top23 = Reply.objects.all().order_by("-author")[:1]#最后回复用户 
 
 	top24 =	UserProfile.objects.all().count
@@ -42,7 +42,7 @@ def index(request):
 			top21 = UserProfile.objects.get(user=u)
 			top27 = Topic.objects.filter(author=u).count
 			top28 = Reply.objects.filter(author=u).count
-			print top27,top28
+
 			d = {'cates':cates, 'top20':top20, 'top21':top21, 'top22':top22, 'top23':top23, 'top24':top24, 'top25':top25, 'top26':top26, 'top27':top27, 'top28':top28}
 			return render_to_response('index.html', d, context_instance=RequestContext(request))
 		except:
@@ -65,8 +65,8 @@ def addcate(request):
 def cateshow(request,id):
 	cate = Category.objects.get(id=int(id))
 	topics = Topic.objects.filter(category=cate).order_by("-id")
-	top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
-	top23 = Reply.objects.all().order_by("-author")[:1]#最后回复用户
+	top22 = Topic.objects.all().order_by("-num_replys")[:9]
+	top23 = Reply.objects.all().order_by("-author")[:1]
 	if request.user.is_authenticated():
 		try:
 			u = User.objects.get(id=request.user.id)
@@ -108,7 +108,7 @@ def replytopic(request,id):
 
 def topicshow(request,id):
 	cates = Category.objects.all()
-	top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
+	top22 = Topic.objects.all().order_by("-num_replys")[:9]
 	t = Topic.objects.get(id=int(id))
 	t.num_views +=1
 	t.save()
@@ -134,7 +134,7 @@ def userinfoadmin(request):
 			u = User.objects.get(id=request.user.id)
 			p = UserProfile.objects.get_or_create(user=u)[0]
 			top21 = UserProfile.objects.get(user=u)
-			top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
+			top22 = Topic.objects.all().order_by("-num_replys")[:9]
 			top27 = Topic.objects.filter(author=u).count
 			top28 = Reply.objects.filter(author=u).count
 			d = {'u':u, 'p':p, 'top21':top21, 'top22':top22, 'top27':top27, 'top28':top28}
@@ -180,7 +180,7 @@ def imgCrop(request):
 def upload(request):
 	if request.user.is_superuser:
 		p = Defaultimg.objects.all()# 获取随机头像
-		top22 = Topic.objects.all().order_by("-num_replys")[:9]#根据回复数降序序取出10条
+		top22 = Topic.objects.all().order_by("-num_replys")[:9]
 		d = {'p':p, 'top22':top22, 'top27':0, 'top28':0}
 		return render_to_response('upload.html', d, context_instance=RequestContext(request))
 	else:
@@ -189,7 +189,7 @@ def upload(request):
 def uploadphoto(request):
 	if request.user.is_superuser:
 		if request.method == "POST":
-			p = DefaultimgForm(request.POST,request.FILES)#POST图片数据，FILES图片内容，profile用户原始图片信息
+			p = DefaultimgForm(request.POST,request.FILES)
 			if p.is_valid():
 				p.save()
 		return redirect('/upload')
@@ -236,4 +236,48 @@ def topic_update(request,id):
 
 ########################################################
 
+def main_password_change(request,
+                    template_name='registration/password_change_form.html',
+                    post_change_redirect=None,
+                    password_change_form=PasswordChangeForm,
+                    current_app=None, extra_context=None):
+	if post_change_redirect is None:
+		post_change_redirect = reverse('password_change_done')
+	else:
+		post_change_redirect = resolve_url(post_change_redirect)
+	if request.method == "POST":
+		form = password_change_form(user=request.user, data=request.POST)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(post_change_redirect)
+	else:
+		form = password_change_form(user=request.user)
+	top22 = Topic.objects.all().order_by("-num_replys")[:9]
+	if request.user.is_authenticated():
+		u = User.objects.get(id=request.user.id)
+		top21 = UserProfile.objects.get(user=u)
+		top27 = Topic.objects.filter(author=u).count
+		top28 = Reply.objects.filter(author=u).count
+		context = {
+			'form': form, 'top21':top21, 'top22':top22, 'top27':top27, 'top28':top28,
+		}
+	else:
+		context = {
+			'form': form,
+		}
+	if extra_context is not None:
+		context.update(extra_context)
+	return TemplateResponse(request, template_name, context,
+                            current_app=current_app)
+'''
+def main_password_change_done(request,
+                         template_name='registration/password_change_done.html',
+                         current_app=None, extra_context=None):
+	context = {}
+	if extra_context is not None:
+		context.update(extra_context)
+	return TemplateResponse(request, template_name, context,
+                            current_app=current_app)
+'''
+########################################################
 
